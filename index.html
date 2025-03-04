@@ -307,9 +307,7 @@ img {
 </ul>
 </section><section><ul class="todo-list in-progress-list" title="In Progress List" data-list-name="in-progress-list">
 </ul><ul class="todo-list done-list" title="Done List" data-list-name="done-list">
-</ul><ul class="todo-list hold-list" title="On Hold Todo" data-list-name="hold-list"><li class="input">
-  <input type="text" class="task-input" placeholder="Please Enter the task on hold" />
-</li>
+</ul><ul class="todo-list hold-list" title="On Hold Todo" data-list-name="hold-list">
 </ul><ul class="details-list" title="Relevant Details" data-list-name="details-list">
   <li class="input">
     <input type="text" class="task-input" placeholder="Please Enter whatever relevant details needed down here" />
@@ -348,6 +346,18 @@ $(document).ready(function() {
   reloadTodos();
   reloadSelectedTodo();
   
+  $(".hold-list").sortable({
+    'connectWith': '.todo-list',
+    receive: function(event, ui) {
+      ui.item.find(".done-time").remove();
+      
+      saveDetails();
+    },
+    stop: function() {
+      saveDetails();
+    }
+  });
+
   $(".pending-list").sortable({
     'connectWith': '.todo-list',
     receive: function(event, ui) {
